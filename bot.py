@@ -19,5 +19,11 @@ async def nine_nine(ctx):
 
     response = random.choice(brooklyn_99_quotes)
     await ctx.send(response)
+@client.event
+async def on_message(message):
+    no_no_words = ["bad"]
+    for word in no_no_words:
+        if str(message).lower() == word:
+            await bot.delete_message(message)
 
-client.run("")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvLXEA.KoBOJNsZhzF8bvc2XoZ1c46OKZs")
