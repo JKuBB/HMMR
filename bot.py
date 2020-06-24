@@ -1,33 +1,23 @@
 import discord
-
+from discord.ext import commands
+import random
 client = discord.Client()
 
 
-@client.event
-async def on_message(message):
-    id = client.get_guild(ID)
-    channels = ["commands"]
-    valid_users = ["Ti#9298"]
+bot = commands.Bot(command_prefix='!')
 
-    if str(message.channel) in channels and str(message.author) in valid_users:
-        if message.content.find("!hello") != -1:
-            await message.channel.send("Hi")
-        elif message.content == "!users":
-            await message.channel.send(f"""# of Members: {id.member_count}""")
+@bot.command(name='99')
+async def nine_nine(ctx):
+    brooklyn_99_quotes = [
+        'I\'m the human form of the 💯 emoji.',
+        'Bingpot!',
+        (
+            'Cool. Cool cool cool cool cool cool cool, '
+            'no doubt no doubt no doubt no doubt.'
+        ),
+    ]
 
-@client.event
-async def on_message(message):
-    blocked_words = ["retarded", "gay", "nigger", "nig", "faggot", "fag", "jew", "vagina"]
-    for word in blocked_words:
-        if message.content == word:
-            await message.channel.purge(limit=1)
+    response = random.choice(brooklyn_99_quotes)
+    await ctx.send(response)
 
-@client.event
-async def on_message(message):
-    if message.content == "!help":
-        embed = discord.Embed(title="Help on BOT", description="Some useful commands")
-        embed.add_field(name="!hello", value="Greets the user")
-        embed.add_field(name="!users", value="Prints number of users")
-        await message.channel.send(content=None, embed=embed)
-
-client.run("#")
+client.run("")
