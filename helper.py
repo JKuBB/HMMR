@@ -16,6 +16,7 @@ class Bot:
         "grandchampion": 1500
         }
         self.game_id = 1
+
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
@@ -36,26 +37,32 @@ class Bot:
         with open('variables.csv', newline='') as csvfile:
             csvfile.seek(0)
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()z
+            writer.writeheader()
             writer.writerow(self.player_dict)
+
+    def show_mmr(self, user):
+        return self.player_dict[user]
 
     def update_from_csv(self):
         with open('variables.csv', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 self.player_dict = row
-
-    def edit_mmr(self, user):
-        to_csv()
-
+                
+    def edit_mmr(self, user, mmr):
+        if mmr.isnumeric():
+            self.player_dict[user] = mmr
+            self.to_csv()
+        return
+      
     def promote_rank(self, user):
-        to_csv()
+        self.to_csv()
 
     def win(self, user):
-        to_csv()
+        self.to_csv()
 
     def loss(self, user):
-        to_csv()
+        self.to_csv()
 
     def set_teams(self):
 
@@ -66,12 +73,12 @@ class Bot:
         pass
 
     def link_acct(self, platform, user):
-        if platform in self.rank.keys():
-            self.dict[user] = 2
+        self.player_dict[user] = self.rank[platform]
+        self.to_csv()
 
     def bad_words(self, message_list):
         #word filter
-        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded']
+        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded', 'kys', 'retard']
 
         for word in no_no_words:
             for string in message_list:

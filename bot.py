@@ -1,10 +1,11 @@
 import discord
-from discord.ext import commands
 import random
 from helper import Bot
 
 client = discord.Client()
 bot = Bot()
+#gets info from last time bot was online
+bot.update_from_csv()
 
 @client.event
 async def on_message(message):
@@ -22,7 +23,7 @@ async def on_message(message):
     if bot.bad_words(word_list):
         await message.delete()
     #sends embedded messages and adds player to queue
-    if message.content == '=j':
+    if message.content.strip().lower() == '=j':
         len = bot.q(message.author)
 
         embed = discord.Embed(description=f'{message.author.name} has entered the queue.  **[{len}/4]**', color=0x0fbfcc)
@@ -41,7 +42,7 @@ async def on_message(message):
                 teams = bot.set_teams()
 
     #sends embedded messages and removes player from queue
-    if message.content == '=l':
+    if message.content.strip().lower() == '=l':
         len = bot.dq(message.author)
         embed = discord.Embed(description=f'{message.author.name} has left the queue.  **[{len}/4]**', color=0x0fbfcc)
         #arbitrary return value so it doesn't clash with length of queue
@@ -51,8 +52,27 @@ async def on_message(message):
         else:
             await message.channel.send(embed=embed)
 
-    if message.content.startswith() == '=link':
-        bot.link_acct(word_list[1], message.author.name)
+    if message.content.startswith('=link'):
+        if word_list[1] in bot.rank.keys() and message.author.name not in bot.player_dict.keys():
+            bot.link_acct(word_list[1], message.author.name)
+
+    if message.content == "=mmr":
+        mmr = bot.show_mmr(message.author.name)
+        await message.channel.send(f'Your mmr is {mmr}')
+#need to fix
+    if message.content.startswith('=edit mmr'):
+        mmr = bot.edit_mmr(message.author.name, word_list[2])
+
+    if message.content == "=list":
+        await message.channel.send(
+        '''command list:
+                        =link
+                        =mmr
+                        !99
+                        =l
+                        =j
+
+                            ''')
 
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvQ0Nw.80qdkdN5WPCDZTLOWPumvQRAWIo")
+client.run("")
