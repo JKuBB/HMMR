@@ -1,10 +1,11 @@
 import discord
-from discord.ext import commands
 import random
 from helper import Bot
 
 client = discord.Client()
 bot = Bot()
+#gets info from last time bot was online
+bot.update_from_csv()
 
 @client.event
 async def on_message(message):
@@ -52,7 +53,8 @@ async def on_message(message):
             await message.channel.send(embed=embed)
 
     if message.content.startswith() == '=link':
-        bot.link_acct(word_list[1], message.author.name)
+        if word_list[1] in bot.rank.keys() and if message.author.name not in bot.player_dict.keys():
+            bot.link_acct(word_list[1], message.author.name)
 
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvQ0Nw.80qdkdN5WPCDZTLOWPumvQRAWIo")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvTxyg.-czznOGQo8P7g4MLC8u1N3svSz8")

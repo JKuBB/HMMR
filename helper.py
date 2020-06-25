@@ -15,6 +15,7 @@ class Bot:
         "grandchampion": 1500
         }
         self.game_id = 1
+
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
@@ -58,8 +59,8 @@ class Bot:
         pass
 
     def link_acct(self, platform, user):
-        if platform in self.rank.keys():
-            self.dict[user] = 2
+        self.player_dict[user] = self.rank[platform]
+        to_csv()
 
     def bad_words(self, message_list):
         #word filter
