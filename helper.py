@@ -43,7 +43,7 @@ class Bot:
         pass
 
     def link_acct(self, platform, user):
-        pass
+        #=link
 
     def bad_words(self, message_list):
         #word filter

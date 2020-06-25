@@ -48,5 +48,8 @@ async def on_message(message):
         else:
             await message.channel.send(embed=embed)
 
+    if message.content.startswith() == '=link':
+        bot.link_acct(word_list[1], message.author.name)
 
-client.run("")
+
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvQ0Nw.80qdkdN5WPCDZTLOWPumvQRAWIo")
