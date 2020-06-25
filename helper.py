@@ -11,8 +11,6 @@ class Bot:
         if user not in self.queue:
             self.queue.append(user)
             length = len(self.queue)
-            if length == 4:
-                self.queue = []
             return length
         else:
             return 10
@@ -38,7 +36,7 @@ class Bot:
     def loss(self, user):
         pass
 
-    def set_teams(self, user):
+    def set_teams(self):
         pass
 
     def cancel_game(self):
