@@ -1,6 +1,7 @@
 
 import random
 import discord
+import csv
 
 class Bot:
 
@@ -33,20 +34,27 @@ class Bot:
             return 10
 
     def to_csv(self):
-        pass
+        with open('variables.csv', newline='') as csvfile:
+            csvfile.seek(0)
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow(self.player_dict)
 
     def show_mmr(self, user):
         return self.player_dict[user]
 
     def update_from_csv(self):
-        pass
-    #need to fix
+        with open('variables.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                self.player_dict = row
+                
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
             self.player_dict[user] = mmr
             self.to_csv()
         return
-
+      
     def promote_rank(self, user):
         self.to_csv()
 
