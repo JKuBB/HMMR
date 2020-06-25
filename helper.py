@@ -35,20 +35,26 @@ class Bot:
     def to_csv(self):
         pass
 
+    def show_mmr(self, user):
+        return self.player_dict[user]
+
     def update_from_csv(self):
         pass
-
-    def edit_mmr(self, user):
-        to_csv()
+    #need to fix
+    def edit_mmr(self, user, mmr):
+        if mmr.isnumeric():
+            self.player_dict[user] = mmr
+            self.to_csv()
+        return
 
     def promote_rank(self, user):
-        to_csv()
+        self.to_csv()
 
     def win(self, user):
-        to_csv()
+        self.to_csv()
 
     def loss(self, user):
-        to_csv()
+        self.to_csv()
 
     def set_teams(self):
 
@@ -60,11 +66,11 @@ class Bot:
 
     def link_acct(self, platform, user):
         self.player_dict[user] = self.rank[platform]
-        to_csv()
+        self.to_csv()
 
     def bad_words(self, message_list):
         #word filter
-        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded']
+        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded', 'kys', 'retard']
 
         for word in no_no_words:
             for string in message_list:
