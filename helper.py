@@ -1,53 +1,66 @@
 
 import random
 import discord
-import Linked_List
 
 class Bot:
 
     def __init__(self):
-        self.queue = [None]*4
+        self.queue = []
 
-    def q(self, username):
+    def q(self, user):
+        if user not in self.queue:
+            self.queue.append(user)
+            length = len(self.queue)
+            if length == 4:
+                self.queue = []
+            return length
+        else:
+            return 10
+
+
+    def dq(self, user):
+        if user in self.queue:
+            self.queue.remove(user)
+            return len(self.queue)
+        else:
+            return 10
+
+
+    def edit_mmr(self, user):
         pass
 
-    def dq(self, username):
+    def promote_rank(self, user):
         pass
 
-    def edit_mmr(self, username):
+    def win(self, user):
         pass
 
-    def promote_rank(self, username):
+    def loss(self, user):
         pass
 
-    def win(self, username):
-        pass
-
-    def loss(self, username):
-        pass
-
-    def set_teams(self, username):
+    def set_teams(self, user):
         pass
 
     def cancel_game(self):
         pass
 
-    def link_acct(self, platform, username):
+    def link_acct(self, platform, user):
         pass
 
-    def bad_words(self, message):
+    def bad_words(self, message_list):
         #word filter
         no_no_words = ["nigger", 'nig', 'smurf', 'fag', 'faggot', 'gay', 'retarded']
 
         for word in no_no_words:
-            if message.strip().lower() == word:
-                return True
+            for string in message_list:
+                if string.strip().lower() == word:
+                    return True
 
     def nine_nine(self):
         #returns a random B99 quote
         brooklyn_99_quotes = [
             'I\'m the human form of the 💯 emoji.',
-            'Bingpot!',
+            'Bingpot!', "Nine Nine!",
             (
                 'Cool. Cool cool cool cool cool cool cool, '
                 'no doubt no doubt no doubt no doubt.'
