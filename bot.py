@@ -25,14 +25,21 @@ async def on_message(message):
     if message.content == '=j':
         len = bot.q(message.author.name)
 
-        embed = discord.Embed(description=f'{message.author.name} has entered the queue.  [{len}/4]', color=0x0fbfcc)
+        embed = discord.Embed(description=f'{message.author.name} has entered the queue.  **[{len}/4]**', color=0x0fbfcc)
+
         if len == 10:
             embed = discord.Embed(description="You can't join a queue if you're already in one ;)", color=0x0fbfcc)
             await message.channel.send(embed=embed)
         else:
             await message.channel.send(embed=embed)
             if len == 4:
+
+                """
+                This sets the embed to mention the users as part of the message, it's just a test for seeing if this works
+                """
                 embed = discord.Embed(description="Queue is full. Picking teams...", color=0x0fbfcc)
+                embed.addField("Team 1:", {Bot.Queue[0]} + "\n" + {Bot.Queue[1]}, inline = true)
+                embed.addField("Team 2:", {Bot.Queue[2]} + "\n" + {Bot.Queue[3]}, inline = true)
                 await message.channel.send(embed=embed)
                 #set teams, need to @people and embed the teams in a pretty way
                 teams = bot.set_teams()
