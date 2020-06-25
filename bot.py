@@ -23,7 +23,7 @@ async def on_message(message):
         await message.delete()
     #sends embedded messages and adds player to queue
     if message.content == '=j':
-        len = bot.q(message.author.name)
+        len = bot.q(message.author)
 
         embed = discord.Embed(description=f'{message.author.name} has entered the queue.  **[{len}/4]**', color=0x0fbfcc)
 
@@ -31,23 +31,19 @@ async def on_message(message):
             embed = discord.Embed(description="You can't join a queue if you're already in one ;)", color=0x0fbfcc)
             await message.channel.send(embed=embed)
         else:
-            await message.channel.send(embed=embed)
-            if len == 4:
-
-                """
-                This sets the embed to mention the users as part of the message, it's just a test for seeing if this works
-                """
-                embed = discord.Embed(description="Queue is full. Picking teams...", color=0x0fbfcc)
-                embed.addField("Team 1:", {Bot.Queue[0]} + "\n" + {Bot.Queue[1]}, inline = true)
-                embed.addField("Team 2:", {Bot.Queue[2]} + "\n" + {Bot.Queue[3]}, inline = true)
+            if len!=4:
                 await message.channel.send(embed=embed)
+            else:
+                embed = discord.Embed(description="Queue is full. Picking teams...", color=0x0fbfcc)
+                await message.channel.send(embed=embed)
+                await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>')
                 #set teams, need to @people and embed the teams in a pretty way
                 teams = bot.set_teams()
 
     #sends embedded messages and removes player from queue
     if message.content == '=l':
-        len = bot.dq(message.author.name)
-        embed = discord.Embed(description=f'{message.author.name} has left the queue.  [{len}/4]', color=0x0fbfcc)
+        len = bot.dq(message.author)
+        embed = discord.Embed(description=f'{message.author.name} has left the queue.  **[{len}/4]**', color=0x0fbfcc)
         #arbitrary return value so it doesn't clash with length of queue
         if len == 10:
             embed = discord.Embed(description="You can't leave a queue if you aren't in one ;)", color=0x0fbfcc)

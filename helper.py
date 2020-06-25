@@ -6,7 +6,15 @@ class Bot:
 
     def __init__(self):
         self.queue = []
-
+        self.player_dict = {}
+        self.rank = {
+        "gold": 650,
+        "platinum": 840,
+        "diamond": 980,
+        "champion": 1300,
+        "grandchampion": 1500
+        }
+        self.game_id = 1
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
@@ -23,31 +31,39 @@ class Bot:
         else:
             return 10
 
+    def to_csv(self):
+        pass
+
+    def update_from_csv(self):
+        pass
 
     def edit_mmr(self, user):
-        pass
+        to_csv()
 
     def promote_rank(self, user):
-        pass
+        to_csv()
 
     def win(self, user):
-        pass
+        to_csv()
 
     def loss(self, user):
-        pass
+        to_csv()
 
     def set_teams(self):
-        pass
+
+        self.queue = []
+        self.game_id+=1
 
     def cancel_game(self):
         pass
 
     def link_acct(self, platform, user):
-        #=link
+        if platform in self.rank.keys():
+            self.dict[user] = 2
 
     def bad_words(self, message_list):
         #word filter
-        no_no_words = ["nigger", 'nig', 'smurf', 'fag', 'faggot', 'gay', 'retarded']
+        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded']
 
         for word in no_no_words:
             for string in message_list:
