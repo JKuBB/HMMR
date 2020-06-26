@@ -1,8 +1,7 @@
 
 import random
 import discord
-import csv
-
+import sqlite3
 class Bot:
 
     def __init__(self):
@@ -85,3 +84,38 @@ class Bot:
         ]
 
         return random.choice(brooklyn_99_quotes)
+
+    def create(self):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+            id integer PRIMARY KEY,
+            username text,
+            mmr integer,
+            wins integer,
+            losses integer,
+            draws integer,
+            games integer,
+            rank text
+            )
+            ''')
+    def update(self, username, key, value):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+        UPDATE users
+        SET ?=?
+        WHERE username=?''', [key, value, username])
+
+
+    def read(self, username):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        return cursor.execute('''
+        SELECT * FROM users WHERE username=?
+        ''', username)
+    def create_user(self, username, mmr, rank):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO users (username, mmr, wins, losses, draws, games, rank), VALUES (?, ?, 0, 0, 0, 0, ?)', [username, mmr, rank])
