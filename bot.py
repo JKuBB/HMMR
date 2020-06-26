@@ -75,4 +75,8 @@ async def on_message(message):
                             ''')
 
 
+<<<<<<< Updated upstream
 client.run("")
+=======
+client.run("NzI1NzM4MTM1NTcyNTc4MzE0.XvY5cQ.tsp6k0DDXfX8Og8tzd04undic34")
+>>>>>>> Stashed changes

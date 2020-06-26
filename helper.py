@@ -34,14 +34,31 @@ class Bot:
             return 10
 
     def to_csv(self):
+<<<<<<< Updated upstream
         with open('variables.csv', newline='') as csvfile:
             csvfile.seek(0)
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerow(self.player_dict)
+=======
+        with open('variables.csv', 'w', newline='') as csvfile:
+            fieldnames = ["user", "mmr"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            for key in self.player_dict.keys():
+                writer.writerow(self.player_dict.get(key))
+
+
+    def update_from_csv(self):
+        with open('variables.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                self.player_dict[row['user']] = row
+>>>>>>> Stashed changes
 
     def show_mmr(self, user):
-        return self.player_dict[user]
+        return self.player_dict[user]['mmr']
 
     def update_from_csv(self):
         with open('variables.csv', newline='') as csvfile:
@@ -51,7 +68,8 @@ class Bot:
                 
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
-            self.player_dict[user] = mmr
+            tempdict = {"user": user, "mmr": mmr}
+            self.player_dict[user] = tempdict
             self.to_csv()
         return
       
@@ -72,8 +90,15 @@ class Bot:
     def cancel_game(self):
         pass
 
+    """
+    The thought process behind this is to add a nested dictionary with a user's name as the key so that we can read and write rows of user data instead of 1 singular dictionary.
+    should end up like this:
+    {username: {"user": username, "mmr": mmr}}
+    the get call for this would be player_dict[username]["mmr"] like a 2d array
+    """
     def link_acct(self, platform, user):
-        self.player_dict[user] = self.rank[platform]
+        tempdict = {"user": user, "mmr": self.rank[platform]}
+        self.player_dict[user] = tempdict
         self.to_csv()
 
     def bad_words(self, message_list):
