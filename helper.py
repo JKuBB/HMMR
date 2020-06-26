@@ -34,6 +34,7 @@ class Bot:
             return 10
 
     def to_csv(self):
+
         with open('variables.csv', 'w', newline='') as csvfile:
             fieldnames = ["user", "mmr"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -51,7 +52,6 @@ class Bot:
 
     def show_mmr(self, user):
         return self.player_dict[user]['mmr']
-
 
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
