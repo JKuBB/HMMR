@@ -34,13 +34,6 @@ class Bot:
             return 10
 
     def to_csv(self):
-<<<<<<< Updated upstream
-        with open('variables.csv', newline='') as csvfile:
-            csvfile.seek(0)
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerow(self.player_dict)
-=======
         with open('variables.csv', 'w', newline='') as csvfile:
             fieldnames = ["user", "mmr"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -55,24 +48,18 @@ class Bot:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 self.player_dict[row['user']] = row
->>>>>>> Stashed changes
 
     def show_mmr(self, user):
         return self.player_dict[user]['mmr']
 
-    def update_from_csv(self):
-        with open('variables.csv', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                self.player_dict = row
-                
+
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
             tempdict = {"user": user, "mmr": mmr}
             self.player_dict[user] = tempdict
             self.to_csv()
         return
-      
+
     def promote_rank(self, user):
         self.to_csv()
 
