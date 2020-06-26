@@ -33,29 +33,22 @@ class Bot:
         else:
             return 10
 
-    def to_csv(self):
-        pass
-
-    def update_from_csv(self):
-        pass
-
     def show_mmr(self, user):
         return self.player_dict[user]
 
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
             self.player_dict[user] = mmr
-            self.to_csv()
         return
 
     def promote_rank(self, user):
-        self.to_csv()
+        pass
 
     def win(self, user):
-        self.to_csv()
+        pass()
 
     def loss(self, user):
-        self.to_csv()
+        pass
 
     def set_teams(self):
 
@@ -67,7 +60,7 @@ class Bot:
 
     def link_acct(self, platform, user):
         self.player_dict[user] = self.rank[platform]
-        self.to_csv()
+        pass
 
     def bad_words(self, message_list):
         #word filter
