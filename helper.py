@@ -37,6 +37,7 @@ class Bot:
 
         with open('variables.csv', 'w', newline='') as csvfile:
             fieldnames = ["user", "mmr"]
+            csvfile.seek(0)
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
