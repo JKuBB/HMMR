@@ -70,6 +70,8 @@ class Bot:
             for string in message_list:
                 if string.strip().lower() == word:
                     return True
+    def update_rank(self, user, rank):
+        pass
 
     def nine_nine(self):
         #returns a random B99 quote
