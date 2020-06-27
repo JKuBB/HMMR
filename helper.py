@@ -42,14 +42,14 @@ class Bot:
     def read(self, username):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=?;", (username,))
+        cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=:username;", {"username": username})
         return cursor
 
     def create_user(self, username, mmr, rank):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
         print(username)
-        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (?, ?, 0, 0, 0, 0, ?)", (username, mmr, rank))
+        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (:username, :mmr, 0, 0, 0, 0, :mmr)", {"username":username}, {"mmr": mmr}, {"rank": rank})
 
     def q(self, user):
         if user not in self.queue:
