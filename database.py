@@ -148,7 +148,17 @@ class Database:
         conn.commit()
 
         conn.close()
-    
+    def set_user_mmr(self, username, mmr):
+        sql = "UPDATE Users SET Mmr = ? WHERE Username = ?"
+        args = (mmr, username)
+
+        conn = sqlite.connect(self.db_file_path)
+
+        conn.execute(sql, args)
+
+        conn.commit()
+
+        conn.close()
     def set_user_rank(self, username, rank):
         sql = "UPDATE Users SET Rank = ? WHERE Username = ?"
         args = (rank, username)
@@ -160,7 +170,7 @@ class Database:
         conn.commit()
 
         conn.close()
-    
+
     def delete_user(self, username):
         sql = "DELETE FROM Users WHERE Username = ?"
         args = (username,)
@@ -172,5 +182,3 @@ class Database:
         conn.commit()
 
         conn.close()
-
-
