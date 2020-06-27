@@ -2,6 +2,8 @@
 import random
 import discord
 import sqlite3
+import time
+import threading
 from database import Database
 
 class Bot:
@@ -17,6 +19,7 @@ class Bot:
         "grandchampion": 1500
         }
         self.game_id = 1
+        self.WAIT_SECONDS = 3
 
     def q(self, user):
         if user not in self.queue:
@@ -26,7 +29,6 @@ class Bot:
         else:
             return 10
 
-
     def dq(self, user):
         if user in self.queue:
             self.queue.remove(user)
@@ -34,9 +36,15 @@ class Bot:
         else:
             return 10
 
+    def q_timeout(self,user):
+        if len(self.queue) != 0:
+            if user in self.queue:
+                self.queue.remove(user)
+                return True
+
     def show_mmr(self, user):
-        x = self.db.get_user(user)
-        return x[2]
+        mmr = self.db.get_user(user)
+        return mmr[2]
 
     def get_profile(self, user):
         pass
@@ -65,6 +73,7 @@ class Bot:
         print(user)
         if (self.db.get_user(user) is None):
             self.db.create_user(user, self.rank[rank], "Filler")
+            #call db set rank and pass in mmr and assign in the function to the db based on mmr
             return True
         else:
             return False

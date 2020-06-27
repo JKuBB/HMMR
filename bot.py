@@ -1,17 +1,20 @@
 import discord
 import random
 from helper import Bot
+import threading
 #upon linking, rank channels need to be accessible only by those in said ranks
 #updates and database hits
 #ADD ERROR MESSAGES FOR COMMANDS AND A PROPER COMMAND LIST
 client = discord.Client()
 bot = Bot()
 #gets info from last time bot was online
-# bot.create()
+
+
 
 
 @client.event
 async def on_message(message):
+    WAIT_SECONDS = 3
 
     #turns phrase to list of words
     word_list = message.content.split()
@@ -33,14 +36,17 @@ async def on_message(message):
     if bot.bad_words(word_list):
         await message.delete()
 
-
     #sends embedded messages and adds player to queue
     if message.content.strip().lower() == '=j':
         #NEED A QUEUE TIMEOUT
         len = bot.q(message.author)
 
         embed = discord.Embed(description=f'{message.author.name} has entered the queue.  **[{len}/4]**', color=0x0fbfcc) #out of 6 for 6mans
-
+        '''timer = threading.Timer(WAIT_SECONDS, bot.q_timeout(message.author))
+        timer.start()
+        if bot.q_timeout(message.author):
+            timeout = discord.Embed(description=f'{message.author.name} timed out of the queue.', color=0x0fbfcc)
+            await message.channel.send(embed=timeout)'''
         if len == 10:
             embed = discord.Embed(description="You can't join a queue if you're already in one ;)", color=0x0fbfcc)
             await message.channel.send(embed=embed)
@@ -120,4 +126,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.Xvaklg.hxN0JaoBItEPPF1Vd4rNlNDttCE")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvfHrg.1kt-BPOifa2kC67j8SpR-eP1Uds")
