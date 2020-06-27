@@ -16,6 +16,42 @@ class Bot:
         }
         self.game_id = 1
 
+    def create(self):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+            id integer PRIMARY KEY,
+            username text,
+            mmr integer,
+            wins integer,
+            losses integer,
+            draws integer,
+            games integer,
+            rank text
+            )
+            ''')
+    def update(self, username, key, value):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+        UPDATE users
+        SET ?=?
+        WHERE username=?''', [key, value, username])
+
+
+    def read(self, username):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        return cursor.execute('''
+        SELECT * FROM users WHERE username=?
+        ''', username)
+
+    def create_user(self, username, mmr, rank):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO users (username, mmr, wins, losses, draws, games, rank), VALUES (?, ?, 0, 0, 0, 0, ?)', [username, mmr, rank])
+
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
@@ -54,12 +90,9 @@ class Bot:
         self.queue = []
         self.game_id+=1
 
-    def cancel_game(self):
-        pass
+    def link_acct(self, rank, user):
+        self.player_dict[user] = self.rank[rank]
 
-    def link_acct(self, platform, user):
-        self.player_dict[user] = self.rank[platform]
-        pass
 
     def bad_words(self, message_list):
         #word filter
@@ -84,38 +117,3 @@ class Bot:
         ]
 
         return random.choice(brooklyn_99_quotes)
-
-    def create(self):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-            id integer PRIMARY KEY,
-            username text,
-            mmr integer,
-            wins integer,
-            losses integer,
-            draws integer,
-            games integer,
-            rank text
-            )
-            ''')
-    def update(self, username, key, value):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-        UPDATE users
-        SET ?=?
-        WHERE username=?''', [key, value, username])
-
-
-    def read(self, username):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        return cursor.execute('''
-        SELECT * FROM users WHERE username=?
-        ''', username)
-    def create_user(self, username, mmr, rank):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (username, mmr, wins, losses, draws, games, rank), VALUES (?, ?, 0, 0, 0, 0, ?)', [username, mmr, rank])

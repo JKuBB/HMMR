@@ -19,12 +19,18 @@ async def on_message(message):
     if message.author == client.user:
         return
     #nine-nine
+
+
     if message.content == '!99':
         response = bot.nine_nine()
         await message.channel.send(response)
+
+
     #word filter
     if bot.bad_words(word_list):
         await message.delete()
+
+
     #sends embedded messages and adds player to queue
     if message.content.strip().lower() == '=j':
         #NEED A QUEUE TIMEOUT
@@ -46,10 +52,14 @@ async def on_message(message):
                 teams = bot.set_teams()
                 #create voice channels, and captain selection for teams
 
+
+
     if message.content.strip().lower().startswith("=vote"):
         #ADMIN SHOULD BE ABLE TO OVERRIDE IF DISPUTED
         #AFTER 3 Votes, VC SHOULD DISAPPEAR
         pass
+
+
 
     #sends embedded messages and removes player from queue
     if message.content.strip().lower() == '=l':
@@ -62,14 +72,20 @@ async def on_message(message):
         else:
             await message.channel.send(embed=embed)
 #=link, =mmr, and =edit mmr are all functions kieran will have to change
+
+
     if message.content.startswith('=link'):
         if word_list[1] in bot.rank.keys() and message.author.name not in bot.player_dict.keys():
             bot.link_acct(word_list[1], message.author.name)
             #THEN IMMEDIATELY CREATE DATABASE USER WITH MMR AND RANK
     #ONLY FOR TESTING PURPOSES
+
+
     if message.content == "=mmr":
         mmr = bot.show_mmr(message.author.name)
         await message.channel.send(f'Your mmr is {mmr}')
+
+
 
     if message.content.startswith('=edit'):
         #SHOULD ONLY BE ACCESSIBLE BY ADMIN
@@ -78,6 +94,8 @@ async def on_message(message):
         else:
             embed = discord.Embed(description="This command was used incorrectly, should be used '=edit user mmr'", color=0x0fbfcc)
             await message.channel.send(embed=embed)
+
+
 
     if message.content == "=update":
         #ONLY ADMIN
@@ -93,4 +111,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvaOSA.kX4x2drnGwTIH_XUAN4Nsxjrdtg")
