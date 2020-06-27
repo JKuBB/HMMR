@@ -2,9 +2,12 @@
 import random
 import discord
 import sqlite3
+from database import Database
+
 class Bot:
 
     def __init__(self):
+        self.db = Database()
         self.queue = []
         self.rank = {
         "gold": 650,
@@ -15,44 +18,6 @@ class Bot:
         }
         self.game_id = 1
 
-    def create(self):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY,
-            username TEXT,
-            mmr INTEGER,
-            wins INTEGER,
-            losses INTEGER,
-            draws INTEGER,
-            games INTEGER,
-            rank TEXT
-            )
-            ''')
-        conn.commit()
-    def update(self, username, key, value):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-        UPDATE users
-        SET ?=?
-        WHERE username=?''', (key, value, username))
-
-    def read(self, username):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=:username;", {"username": username})
-        conn.commit()
-        return cursor
-
-    def create_user(self, username, mmr, rank):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        print(username)
-        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (:username, :mmr, 0, 0, 0, 0, :mmr)", {"username":username, "mmr": mmr, "rank": rank})
-
-        conn.commit()
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
@@ -70,8 +35,8 @@ class Bot:
             return 10
 
     def show_mmr(self, user):
-        x = self.read(user).fetchall()
-        return x
+        x = self.db.get_user(user)
+        return x["Mmr"]
 
     def get_profile(self, user):
         pass
@@ -98,8 +63,8 @@ class Bot:
 
     def link_acct(self, rank, user):
         print(user)
-        if len(self.read(user).fetchall()) < 1:
-            self.create_user(user, self.rank[rank], "Filler")
+        if (self.db.get_user(user) is None):
+            self.db.create_user(user, self.rank[rank], "Filler")
             return True
         else:
             return False
@@ -115,8 +80,8 @@ class Bot:
                     return True
 
     def update_rank(self, user, rank):
-        if self.read(user) is not None:
-            self.update(user, 'rank', rank)
+        if self.db.get_user(user) is not None:
+            self.db.set_user_rank(user, rank)
 
     def nine_nine(self):
         #returns a random B99 quote

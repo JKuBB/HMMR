@@ -1,6 +1,6 @@
 import sqlite3 as sqlite
 
-class database:
+class Database:
     def __init__(self):
         conn = sqlite.connect('bot_data.db')
         cursor = conn.cursor()
@@ -170,4 +170,3 @@ class database:
         conn.close()
 
 
-        

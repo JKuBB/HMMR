@@ -7,7 +7,7 @@ from helper import Bot
 client = discord.Client()
 bot = Bot()
 #gets info from last time bot was online
-bot.create()
+# bot.create()
 
 
 @client.event
