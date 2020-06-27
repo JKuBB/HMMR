@@ -20,6 +20,9 @@ async def on_message(message):
         return
     #nine-nine
 
+    if message.content.lower().strip() == "!david":
+        embed = discord.Embed(description="L O L **N 0 0 B**", color=0x0fbfcc)
+        await message.channel.send(embed=embed)
 
     if message.content == '!99':
         response = bot.nine_nine()
@@ -47,7 +50,7 @@ async def on_message(message):
             else:
                 embed = discord.Embed(description="Queue is full. Picking teams...", color=0x0fbfcc)
                 await message.channel.send(embed=embed)
-                await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>') '''<@{bot.queue[4].id}> <@{bot.queue[5].id}> for 6mans'''
+                await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>') #'''<@{bot.queue[4].id}> <@{bot.queue[5].id}> for 6mans'''
                 #set teams, need to @people and embed the teams in a pretty way
                 teams = bot.set_teams()
                 #create voice channels, and captain selection for teams
@@ -75,8 +78,14 @@ async def on_message(message):
 
 
     if message.content.startswith('=link'):
-        if word_list[1] in bot.rank.keys() and message.author.name not in bot.player_dict.keys():
-            bot.link_acct(word_list[1], message.author.name)
+        if word_list[1] in bot.rank.keys():
+            x = bot.link_acct(word_list[1], message.author.name)
+            if x == True:
+                embed = discord.Embed(description="Account successfully linked :)", color=0x0fbfcc)
+                await message.channel.send(embed=embed)
+            else:
+                embed = discord.Embed(description="Account could not be linked, either your account is already linked, or an error occured.", color=0x0fbfcc)
+                await message.channel.send(embed=embed)
             #THEN IMMEDIATELY CREATE DATABASE USER WITH MMR AND RANK
     #ONLY FOR TESTING PURPOSES
 

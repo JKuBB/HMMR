@@ -6,7 +6,6 @@ class Bot:
 
     def __init__(self):
         self.queue = []
-        self.player_dict = {}
         self.rank = {
         "gold": 650,
         "platinum": 840,
@@ -21,36 +20,37 @@ class Bot:
         cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
-            id integer PRIMARY KEY,
-            username text,
-            mmr integer,
-            wins integer,
-            losses integer,
-            draws integer,
-            games integer,
-            rank text
+            id INTEGER PRIMARY KEY,
+            username TEXT,
+            mmr INTEGER,
+            wins INTEGER,
+            losses INTEGER,
+            draws INTEGER,
+            games INTEGER,
+            rank TEXT
             )
             ''')
+
     def update(self, username, key, value):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
         cursor.execute('''
         UPDATE users
         SET ?=?
-        WHERE username=?''', [key, value, username])
-
+        WHERE username=?''', (key, value, username))
 
     def read(self, username):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
-        return cursor.execute('''
-        SELECT * FROM users WHERE username=?
-        ''', username)
+        username = f'\'{username}\''
+        cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=?;", (username,))
+        return cursor
 
     def create_user(self, username, mmr, rank):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (username, mmr, wins, losses, draws, games, rank), VALUES (?, ?, 0, 0, 0, 0, ?)', [username, mmr, rank])
+        print(username)
+        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (?, ?, 0, 0, 0, 0, ?)", (username, mmr, rank))
 
     def q(self, user):
         if user not in self.queue:
@@ -69,18 +69,23 @@ class Bot:
             return 10
 
     def show_mmr(self, user):
-        return self.player_dict[user]
+        x = self.read(user).fetchall()
+        return x
 
+    def get_profile(self, user):
+        pass
+
+#LOOK AT THIS FUNCTION BEFORE DONE
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
-            self.player_dict[user] = mmr
-        return
+            pass
+
 
     def promote_rank(self, user):
         pass
 
     def win(self, user):
-        pass()
+        pass
 
     def loss(self, user):
         pass
@@ -91,7 +96,12 @@ class Bot:
         self.game_id+=1
 
     def link_acct(self, rank, user):
-        self.player_dict[user] = self.rank[rank]
+        print(user)
+        if len(self.read(user).fetchall()) < 1:
+            self.create_user(user, self.rank[rank], "Filler")
+            return True
+        else:
+            return False
 
 
     def bad_words(self, message_list):
@@ -102,8 +112,10 @@ class Bot:
             for string in message_list:
                 if string.strip().lower() == word:
                     return True
+
     def update_rank(self, user, rank):
-        pass
+        if self.read(user) is not None:
+            self.update(user, 'rank', rank)
 
     def nine_nine(self):
         #returns a random B99 quote
