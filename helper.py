@@ -42,7 +42,6 @@ class Bot:
     def read(self, username):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
-        username = f'\'{username}\''
         cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=?;", (username,))
         return cursor
 

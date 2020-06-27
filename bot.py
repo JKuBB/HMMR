@@ -120,4 +120,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvaOSA.kX4x2drnGwTIH_XUAN4Nsxjrdtg")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvahiQ.XxrWt3d-3yTOIfIqad9VyAyt6ek")
