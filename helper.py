@@ -30,7 +30,7 @@ class Bot:
             rank TEXT
             )
             ''')
-
+        conn.commit()
     def update(self, username, key, value):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
@@ -43,14 +43,16 @@ class Bot:
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
         cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=:username;", {"username": username})
+        conn.commit()
         return cursor
 
     def create_user(self, username, mmr, rank):
         conn = sqlite3.connect('variables.db')
         cursor = conn.cursor()
         print(username)
-        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (:username, :mmr, 0, 0, 0, 0, :mmr)", {"username":username}, {"mmr": mmr}, {"rank": rank})
+        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (:username, :mmr, 0, 0, 0, 0, :mmr)", {"username":username, "mmr": mmr, "rank": rank})
 
+        conn.commit()
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
