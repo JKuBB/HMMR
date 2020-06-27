@@ -15,7 +15,25 @@ class Bot:
         "grandchampion": 1500
         }
         self.game_id = 1
-
+    def update(self, username, key, value):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute('''
+        UPDATE users
+        SET ?=?
+        WHERE username=?''', (key, value, username))
+    def read(self, username):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        username = f'\'{username}\''
+        cursor.execute("SELECT mmr, wins, losses, draws, games, rank FROM users WHERE username=?;", (username,))
+        print(cursor.fetchone())
+        print(username)
+        return cursor
+    def create_user(self, username, mmr, rank):
+        conn = sqlite3.connect('variables.db')
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO users (username, mmr, wins, losses, draws, games, rank) VALUES (?, ?, 0, 0, 0, 0, ?)", (username, mmr, rank))
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
@@ -33,7 +51,8 @@ class Bot:
             return 10
 
     def show_mmr(self, user):
-        return self.player_dict[user]
+        x = self.read(user).fetchall()
+        return x #self.player_dict[user]
 
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
@@ -44,7 +63,7 @@ class Bot:
         pass
 
     def win(self, user):
-        pass()
+        pass
 
     def loss(self, user):
         pass
@@ -57,9 +76,11 @@ class Bot:
     def cancel_game(self):
         pass
 
-    def link_acct(self, platform, user):
-        self.player_dict[user] = self.rank[platform]
-        pass
+    def link_acct(self, rank, user):
+        self.player_dict[user] = self.rank[rank]
+        if self.read(user).rowcount < 1:
+            self.create_user(user, self.rank[rank], "Filler")
+
 
     def bad_words(self, message_list):
         #word filter
@@ -70,7 +91,8 @@ class Bot:
                 if string.strip().lower() == word:
                     return True
     def update_rank(self, user, rank):
-        pass
+        if self.read(user) is not None:
+            self.update(user, 'mmr', rank)
 
     def nine_nine(self):
         #returns a random B99 quote
@@ -90,32 +112,13 @@ class Bot:
         cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
-            id integer PRIMARY KEY,
-            username text,
-            mmr integer,
-            wins integer,
-            losses integer,
-            draws integer,
-            games integer,
-            rank text
+            id INTEGER PRIMARY KEY,
+            username TEXT,
+            mmr INTEGER,
+            wins INTEGER,
+            losses INTEGER,
+            draws INTEGER,
+            games INTEGER,
+            rank TEXT
             )
             ''')
-    def update(self, username, key, value):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('''
-        UPDATE users
-        SET ?=?
-        WHERE username=?''', [key, value, username])
-
-
-    def read(self, username):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        return cursor.execute('''
-        SELECT * FROM users WHERE username=?
-        ''', username)
-    def create_user(self, username, mmr, rank):
-        conn = sqlite3.connect('variables.db')
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (username, mmr, wins, losses, draws, games, rank), VALUES (?, ?, 0, 0, 0, 0, ?)', [username, mmr, rank])

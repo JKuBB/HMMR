@@ -41,7 +41,7 @@ async def on_message(message):
             else:
                 embed = discord.Embed(description="Queue is full. Picking teams...", color=0x0fbfcc)
                 await message.channel.send(embed=embed)
-                await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>') '''<@{bot.queue[4].id}> <@{bot.queue[5].id}> for 6mans'''
+                await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>') #'''<@{bot.queue[4].id}> <@{bot.queue[5].id}> for 6mans'''
                 #set teams, need to @people and embed the teams in a pretty way
                 teams = bot.set_teams()
                 #create voice channels, and captain selection for teams
@@ -93,4 +93,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvUDkg.9LCmUfWZrLqjR6sz_SFn2bzg1tQ")
