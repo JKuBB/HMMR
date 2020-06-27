@@ -1,8 +1,9 @@
 import sqlite3 as sqlite
 
 class Database:
-    def __init__(self):
-        conn = sqlite.connect('bot_data.db')
+    def __init__(self, db_file_path):
+        self.db_file_path = db_file_path
+        conn = sqlite.connect(db_file_path)
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -22,6 +23,9 @@ class Database:
         conn.close()
 
     def create_user(self, username, mmr, rank):
+        if (self.get_user(username) is not None):
+            raise Exception('A user with this username already exists')
+
         sql = '''
             INSERT INTO Users (
                 Username,
@@ -45,7 +49,7 @@ class Database:
 
         args = (username, mmr, rank)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -55,7 +59,7 @@ class Database:
 
     def get_all_users(self):
         sql = "SELECT UserId, Username, Mmr, Wins, Losses, Draws, Games, Rank FROM Users"
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         cursor = conn.cursor()
         cursor.execute(sql)
@@ -70,7 +74,7 @@ class Database:
         sql = "SELECT UserId, Username, Mmr, Wins, Losses, Draws, Games, Rank FROM Users WHERE Username = ?"
         args = (username,)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         cursor = conn.cursor()
         cursor.execute(sql, args)
@@ -78,7 +82,7 @@ class Database:
         results = cursor.fetchall()
         user = None
 
-        if (results.count > 0):
+        if (len(results) > 0):
             user = results[0]
 
         conn.close()
@@ -89,7 +93,7 @@ class Database:
         sql = "UPDATE Users SET Wins = Wins + 1 WHERE Username = ?"
         args = (username,)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -101,7 +105,7 @@ class Database:
         sql = "UPDATE Users SET Losses = Losses + 1 WHERE Username = ?"
         args = (username,)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -113,7 +117,7 @@ class Database:
         sql = "UPDATE Users SET Draws = Draws + 1 WHERE Username = ?"
         args = (username,)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -125,7 +129,7 @@ class Database:
         sql = "UPDATE Users SET Games = Games + 1 WHERE Username = ?"
         args = (username,)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -137,7 +141,7 @@ class Database:
         sql = "UPDATE Users SET Mmr = Mmr + ? WHERE Username = ?"
         args = (mmr, username)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -149,7 +153,7 @@ class Database:
         sql = "UPDATE Users SET Rank = ? WHERE Username = ?"
         args = (rank, username)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 
@@ -161,7 +165,7 @@ class Database:
         sql = "DELETE FROM Users WHERE Username = ?"
         args = (username,)
 
-        conn = sqlite.connect('bot_data.db')
+        conn = sqlite.connect(self.db_file_path)
 
         conn.execute(sql, args)
 

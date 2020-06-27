@@ -7,7 +7,7 @@ from database import Database
 class Bot:
 
     def __init__(self):
-        self.db = Database()
+        self.db = Database("bot_data.db")
         self.queue = []
         self.rank = {
         "gold": 650,
@@ -36,7 +36,7 @@ class Bot:
 
     def show_mmr(self, user):
         x = self.db.get_user(user)
-        return x["Mmr"]
+        return x[2]
 
     def get_profile(self, user):
         pass
