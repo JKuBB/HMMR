@@ -1,4 +1,5 @@
 import discord
+from discord.utils import get
 import random
 from helper import Bot
 import threading
@@ -85,9 +86,24 @@ async def on_message(message):
 
     if message.content.startswith('=link'):
         if word_list[1] in bot.rank.keys():
-            x = bot.link_acct(word_list[1], message.author.name)
-            if x == True:
+            x = bot.link_acct(word_list[1], message.author.id)
+            if x != False:
                 embed = discord.Embed(description="Account successfully linked :)", color=0x0fbfcc)
+                rankname = f'rank {x}'
+                guild = message.guild
+                role = get(guild.roles, name=f'rank {x}')
+
+                print(x)
+                if(role != None):
+                    await message.author.add_roles(role)
+                else:
+                    category = await guild.create_category(rankname)
+                    #WE HAVE TO ONLY MAKE THIS VISIBLE TO PEOPLE IN RANK
+                    await guild.create_text_channel(rankname, category=category)
+                    await guild.create_role(name=rankname)
+                    role = get(guild.roles, name=rankname)
+
+                    await message.author.add_roles(role)
                 await message.channel.send(embed=embed)
             else:
                 embed = discord.Embed(description="Account could not be linked, either your account is already linked, or an error occured.", color=0x0fbfcc)
@@ -97,7 +113,7 @@ async def on_message(message):
 
 
     if message.content == "=mmr":
-        mmr = bot.show_mmr(message.author.name)
+        mmr = bot.show_mmr(message.author.id)
         await message.channel.send(f'Your mmr is {mmr}')
 
 
@@ -126,4 +142,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvfHrg.1kt-BPOifa2kC67j8SpR-eP1Uds")
+client.run("")

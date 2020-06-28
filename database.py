@@ -19,6 +19,7 @@ class Database:
             );
         ''')
 
+
         conn.commit()
         conn.close()
 
@@ -148,6 +149,7 @@ class Database:
         conn.commit()
 
         conn.close()
+
     def set_user_mmr(self, username, mmr):
         sql = "UPDATE Users SET Mmr = ? WHERE Username = ?"
         args = (mmr, username)

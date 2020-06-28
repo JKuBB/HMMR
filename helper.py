@@ -18,6 +18,10 @@ class Bot:
         "champion": 1300,
         "grandchampion": 1500
         }
+        self.rank_bounds = {
+        "B": 980,
+        "A": 1380
+        }
         self.game_id = 1
         self.WAIT_SECONDS = 3
 
@@ -69,12 +73,23 @@ class Bot:
         self.queue = []
         self.game_id+=1
 
-    def link_acct(self, rank, user):
+    def link_acct(self, RLrank, user):
         print(user)
+
         if (self.db.get_user(user) is None):
-            self.db.create_user(user, self.rank[rank], "Filler")
+            rank = ""
+            if(self.rank[RLrank] > self.rank_bounds["B"]):
+                rank = "B"
+                if(self.rank[RLrank] > self.rank_bounds["A"]):
+                    rank = "A"
+            else:
+                rank = "C"
+            self.db.create_user(user, self.rank[RLrank], rank)
+
+
+
             #call db set rank and pass in mmr and assign in the function to the db based on mmr
-            return True
+            return rank
         else:
             return False
 
