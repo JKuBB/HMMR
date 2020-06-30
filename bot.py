@@ -24,7 +24,6 @@ async def on_message(message):
     if message.author == client.user:
         return
     #nine-nine
-
     if message.content.lower().strip() == "!david":
         embed = discord.Embed(description="L O L **N 0 0 B**", color=0x0fbfcc)
         await message.channel.send(embed=embed)
@@ -32,12 +31,9 @@ async def on_message(message):
     if message.content == '!99':
         response = bot.nine_nine()
         await message.channel.send(response)
-
-
     #word filter
     if bot.bad_words(word_list):
         await message.delete()
-
     #sends embedded messages and adds player to queue
     if message.content.strip().lower() == '=j':
         #NEED A QUEUE TIMEOUT
@@ -48,37 +44,24 @@ async def on_message(message):
             await message.channel.send(queue_message)
             teams = game.set_teams()
             #create voice channels, and captain selection for teams
-
-
     if message.content.strip().lower() == '=l':
         embed = game.dq(message.author)
         await message.channel.send(embed=embed)
 
-#=link, =mmr, and =edit mmr are all functions ki
     if message.content.strip().lower().startswith("=vote"):
         #ADMIN SHOULD BE ABLE TO OVERRIDE IF DISPUTED
         #AFTER 3 Votes, VC SHOULD DISAPPEAR
         pass
 
-
-
-    #sends embedded messages and removes player from queue
-
-
     if message.content.startswith('=link'):
         if word_list[1] in bot.rank.keys():
-            x = bot.link_acct(word_list[1], message.author.id)
-            await bot.handle_link(x, message)
+            await bot.link_acct(word_list[1], message)
             #THEN IMMEDIATELY CREATE DATABASE USER WITH MMR AND RANK
     #ONLY FOR TESTING PURPOSES
-
-
     if message.content == "=mmr":
         mmr = bot.show_mmr(message.author.id)
         await message.channel.send(f'Your mmr is {mmr}')
-
-
-
+#just a test function rn
     if message.content.startswith('=edit'):
         #SHOULD ONLY BE ACCESSIBLE BY ADMIN
         if len(word_list) == 3:
@@ -86,8 +69,6 @@ async def on_message(message):
         else:
             embed = discord.Embed(description="This command was used incorrectly, should be used '=edit user mmr'", color=0x0fbfcc)
             await message.channel.send(embed=embed)
-
-
 
     if message.content == "=update":
         #ONLY ADMIN
@@ -103,4 +84,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.Xvqqow.loavSBQgdT0H4MCnPb6NyO1WUwY")
+client.run("")
