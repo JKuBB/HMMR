@@ -1,4 +1,4 @@
-
+from discord.utils import get
 import random
 import discord
 import sqlite3
@@ -83,3 +83,31 @@ class Bot:
         ]
 
         return random.choice(brooklyn_99_quotes)
+    #returns the role given by 'rank x'
+    #CAUTION DEADLOCK, MAY BE BENEFICIAL TO LOCK THREAD
+    def get_role(self, message, x):
+        rankname = f'rank {x}'
+        guild = message.guild
+        return get(guild.roles, name=f'rank {x}')
+
+    #sets rank name, creates a category, text channel, and assigns role to message author
+    #CAUTION DEADLOCK, MAY BE BENEFICIAL TO LOCK THREAD
+    async def create_new_role(self, x, guild):
+        rankname = f'rank {x}'
+        category = await guild.create_category(rankname)
+        #WE HAVE TO ONLY MAKE THIS VISIBLE TO PEOPLE IN RANK
+        await guild.create_text_channel(rankname, category=category)
+        await guild.create_role(name=rankname)
+        role = get(guild.roles, name=rankname)
+        await message.author.add_roles(role)
+
+    #checks message to get the role of the command
+    #if the role does not exist, it creates the role
+    #if the role does exist, it adds the role to the author.
+    #CAUTION DEADLOCK, MAY BE BENEFICIAL TO LOCK THREAD
+    async def add_user_role(self, message, x):
+        role = self.get_role(message, x)
+        if role != None:
+            await message.author.add_roles(role)
+        else:
+            await self.create_new_role(x, message.guild)

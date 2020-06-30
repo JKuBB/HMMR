@@ -69,24 +69,12 @@ async def on_message(message):
         if word_list[1] in bot.rank.keys():
             x = bot.link_acct(word_list[1], message.author.id)
             if x != False:
+                #sends message off to helper functions to do magic with it
+                await bot.add_user_role(message, x)
                 embed = discord.Embed(description="Account successfully linked :)", color=0x0fbfcc)
-                rankname = f'rank {x}'
-                guild = message.guild
-                role = get(guild.roles, name=f'rank {x}')
-
-                if role != None:
-                    await message.author.add_roles(role)
-                else:
-                    category = await guild.create_category(rankname)
-                    #WE HAVE TO ONLY MAKE THIS VISIBLE TO PEOPLE IN RANK
-                    await guild.create_text_channel(rankname, category=category)
-                    await guild.create_role(name=rankname)
-                    role = get(guild.roles, name=rankname)
-
-                    await message.author.add_roles(role)
                 await message.channel.send(embed=embed)
             else:
-                embed = discord.Embed(description="Account could not be linked, either your account is already linked, or an error occured.", color=0x0fbfcc)
+                embed = discord.Embed(description='Account could not be linked, either your account is already linked, or an error occured.', color=0x0fbfcc)
                 await message.channel.send(embed=embed)
             #THEN IMMEDIATELY CREATE DATABASE USER WITH MMR AND RANK
     #ONLY FOR TESTING PURPOSES
@@ -122,4 +110,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvqO8Q.XMshSUBQDWBUaobiB7uwME1MScI")
+client.run("")
