@@ -10,7 +10,6 @@ class Bot:
 
     def __init__(self):
         self.db = Database("bot_data.db")
-        self.queue = []
         self.rank = {
         "gold": 650,
         "platinum": 840,
@@ -22,29 +21,6 @@ class Bot:
         "B": 980,
         "A": 1380
         }
-        self.game_id = 1
-        self.WAIT_SECONDS = 3
-
-    def q(self, user):
-        if user not in self.queue:
-            self.queue.append(user)
-            length = len(self.queue)
-            return length
-        else:
-            return 10
-
-    def dq(self, user):
-        if user in self.queue:
-            self.queue.remove(user)
-            return len(self.queue)
-        else:
-            return 10
-
-    def q_timeout(self,user):
-        if len(self.queue) != 0:
-            if user in self.queue:
-                self.queue.remove(user)
-                return True
 
     def show_mmr(self, user):
         mmr = self.db.get_user(user)
@@ -67,11 +43,6 @@ class Bot:
 
     def loss(self, user):
         pass
-
-    def set_teams(self):
-
-        self.queue = []
-        self.game_id+=1
 
     def link_acct(self, RLrank, user):
         print(user)

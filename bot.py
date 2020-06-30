@@ -1,6 +1,7 @@
 import discord
 from discord.utils import get
 import random
+from game import Game
 from helper import Bot
 import threading
 #upon linking, rank channels need to be accessible only by those in said ranks
@@ -8,6 +9,7 @@ import threading
 #ADD ERROR MESSAGES FOR COMMANDS AND A PROPER COMMAND LIST
 client = discord.Client()
 bot = Bot()
+game = Game()
 #gets info from last time bot was online
 
 
@@ -40,14 +42,9 @@ async def on_message(message):
     #sends embedded messages and adds player to queue
     if message.content.strip().lower() == '=j':
         #NEED A QUEUE TIMEOUT
-        len = bot.q(message.author)
+        len = game.q(message.author)
 
         embed = discord.Embed(description=f'{message.author.name} has entered the queue.  **[{len}/4]**', color=0x0fbfcc) #out of 6 for 6mans
-        '''timer = threading.Timer(WAIT_SECONDS, bot.q_timeout(message.author))
-        timer.start()
-        if bot.q_timeout(message.author):
-            timeout = discord.Embed(description=f'{message.author.name} timed out of the queue.', color=0x0fbfcc)
-            await message.channel.send(embed=timeout)'''
         if len == 10:
             embed = discord.Embed(description="You can't join a queue if you're already in one ;)", color=0x0fbfcc)
             await message.channel.send(embed=embed)
@@ -59,7 +56,7 @@ async def on_message(message):
                 await message.channel.send(embed=embed)
                 await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>') #'''<@{bot.queue[4].id}> <@{bot.queue[5].id}> for 6mans'''
                 #set teams, need to @people and embed the teams in a pretty way
-                teams = bot.set_teams()
+                teams = game.set_teams()
                 #create voice channels, and captain selection for teams
 
 
@@ -73,7 +70,7 @@ async def on_message(message):
 
     #sends embedded messages and removes player from queue
     if message.content.strip().lower() == '=l':
-        len = bot.dq(message.author)
+        len = game.dq(message.author)
         embed = discord.Embed(description=f'{message.author.name} has left the queue.  **[{len}/4]**', color=0x0fbfcc) #out of 6 for 6mans
         #arbitrary return value so it doesn't clash with length of queue
         if len == 10:
