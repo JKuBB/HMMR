@@ -111,3 +111,12 @@ class Bot:
             await message.author.add_roles(role)
         else:
             await self.create_new_role(x, message.guild)
+    async def handle_link (self, x, message):
+        if x != False:
+            #sends message off to helper functions to do magic with it
+            await self.add_user_role(message, x)
+            embed = discord.Embed(description="Account successfully linked :)", color=0x0fbfcc)
+            await message.channel.send(embed=embed)
+        else:
+            embed = discord.Embed(description='Account could not be linked, either your account is already linked, or an error occured.', color=0x0fbfcc)
+            await message.channel.send(embed=embed)
