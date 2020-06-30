@@ -11,13 +11,12 @@ client = discord.Client()
 bot = Bot()
 game = Game()
 #gets info from last time bot was online
-
+#add constants for colors
 
 
 
 @client.event
 async def on_message(message):
-    WAIT_SECONDS = 3
 
     #turns phrase to list of words
     word_list = message.content.split()
@@ -42,25 +41,20 @@ async def on_message(message):
     #sends embedded messages and adds player to queue
     if message.content.strip().lower() == '=j':
         #NEED A QUEUE TIMEOUT
-        len = game.q(message.author)
-
-        embed = discord.Embed(description=f'{message.author.name} has entered the queue.  **[{len}/4]**', color=0x0fbfcc) #out of 6 for 6mans
-        if len == 10:
-            embed = discord.Embed(description="You can't join a queue if you're already in one ;)", color=0x0fbfcc)
-            await message.channel.send(embed=embed)
-        else:
-            if len!=4:#or !6 for 6mans
-                await message.channel.send(embed=embed)
-            else:
-                embed = discord.Embed(description="Queue is full. Picking teams...", color=0x0fbfcc)
-                await message.channel.send(embed=embed)
-                await message.channel.send(f'<@{bot.queue[0].id}> <@{bot.queue[1].id}> <@{bot.queue[2].id}> <@{bot.queue[3].id}>') #'''<@{bot.queue[4].id}> <@{bot.queue[5].id}> for 6mans'''
-                #set teams, need to @people and embed the teams in a pretty way
-                teams = game.set_teams()
-                #create voice channels, and captain selection for teams
+        embed = game.q(message.author)
+        await message.channel.send(embed=embed)
+        queue_message = game.check_q_full()
+        if queue_message:
+            await message.channel.send(queue_message)
+            teams = game.set_teams()
+            #create voice channels, and captain selection for teams
 
 
+    if message.content.strip().lower() == '=l':
+        embed = game.dq(message.author)
+        await message.channel.send(embed=embed)
 
+#=link, =mmr, and =edit mmr are all functions ki
     if message.content.strip().lower().startswith("=vote"):
         #ADMIN SHOULD BE ABLE TO OVERRIDE IF DISPUTED
         #AFTER 3 Votes, VC SHOULD DISAPPEAR
@@ -69,16 +63,6 @@ async def on_message(message):
 
 
     #sends embedded messages and removes player from queue
-    if message.content.strip().lower() == '=l':
-        len = game.dq(message.author)
-        embed = discord.Embed(description=f'{message.author.name} has left the queue.  **[{len}/4]**', color=0x0fbfcc) #out of 6 for 6mans
-        #arbitrary return value so it doesn't clash with length of queue
-        if len == 10:
-            embed = discord.Embed(description="You can't leave a queue if you aren't in one ;)", color=0x0fbfcc)
-            await message.channel.send(embed=embed)
-        else:
-            await message.channel.send(embed=embed)
-#=link, =mmr, and =edit mmr are all functions kieran will have to change
 
 
     if message.content.startswith('=link'):
@@ -90,8 +74,7 @@ async def on_message(message):
                 guild = message.guild
                 role = get(guild.roles, name=f'rank {x}')
 
-                print(x)
-                if(role != None):
+                if role != None:
                     await message.author.add_roles(role)
                 else:
                     category = await guild.create_category(rankname)
@@ -139,4 +122,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("")
+client.run("NzI0OTk2OTA2OTIwNzA2MDY4.XvqO8Q.XMshSUBQDWBUaobiB7uwME1MScI")

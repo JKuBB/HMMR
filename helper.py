@@ -34,14 +34,7 @@ class Bot:
         if mmr.isnumeric():
             pass
 
-
     def promote_rank(self, user):
-        pass
-
-    def win(self, user):
-        pass
-
-    def loss(self, user):
         pass
 
     def link_acct(self, RLrank, user):
