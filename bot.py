@@ -81,12 +81,17 @@ async def on_message(message):
 
     if message.content.startswith('=edit'):
         #SHOULD ONLY BE ACCESSIBLE BY ADMIN
-        if len(word_list) == 3:
-            mmr = bot.edit_mmr(word_list[1], word_list[2])
+        role = get(message.guild.roles, name='Admin')
+        if(role in message.author.roles):
+            if len(word_list) == 3:
+                for member in message.mentions:
+                    mmr = bot.edit_mmr(member.id, word_list[2])
+            else:
+                embed = discord.Embed(description="This command was used incorrectly, should be used '=edit user mmr'", color=0x0fbfcc)
+                await message.channel.send(embed=embed)
         else:
-            embed = discord.Embed(description="This command was used incorrectly, should be used '=edit user mmr'", color=0x0fbfcc)
+            embed = discord.Embed(description="You do not have permission to use this command.", color=0x0fbfcc)
             await message.channel.send(embed=embed)
-
 
 
     if message.content == "=update":
@@ -103,4 +108,4 @@ async def on_message(message):
         pass
         #DATABASEHIT
 
-client.run("NzI0OTk2OTA2OTIwNzA2MDY4.Xvqqow.loavSBQgdT0H4MCnPb6NyO1WUwY")
+client.run("")

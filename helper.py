@@ -32,7 +32,7 @@ class Bot:
 #LOOK AT THIS FUNCTION BEFORE DONE
     def edit_mmr(self, user, mmr):
         if mmr.isnumeric():
-            pass
+            self.db.set_user_mmr(user, mmr)
 
     def promote_rank(self, user):
         pass
