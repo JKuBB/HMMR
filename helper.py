@@ -37,8 +37,8 @@ class Bot:
     def promote_rank(self, user):
         pass
 
-    def link_acct(self, RLrank, user):
-        print(user)
+    async def link_acct(self, RLrank, message):
+        user = message.author.id
 
         if (self.db.get_user(user) is None):
             rank = ""
@@ -49,13 +49,11 @@ class Bot:
             else:
                 rank = "C"
             self.db.create_user(user, self.rank[RLrank], rank)
-
-
-
             #call db set rank and pass in mmr and assign in the function to the db based on mmr
-            return rank
+            x = rank
         else:
-            return False
+            x = False
+        await self.handle_link(x, message)
 
 
     def bad_words(self, message_list):
@@ -111,6 +109,7 @@ class Bot:
             await message.author.add_roles(role)
         else:
             await self.create_new_role(x, message.guild)
+
     async def handle_link (self, x, message):
         if x != False:
             #sends message off to helper functions to do magic with it
