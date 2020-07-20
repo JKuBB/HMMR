@@ -50,18 +50,17 @@ async def on_message(message):
 
     if message.content.strip().lower().startswith("=vote"):
         #ADMIN SHOULD BE ABLE TO OVERRIDE IF DISPUTED
-        #AFTER 3 Votes, VC SHOULD DISAPPEAR
+        #AFTER 3 Votes, VC SHOULD DISAPPEAR, shold store who needs to be voting so randos cant
         pass
 
     if message.content.startswith('=link'):
         if word_list[1] in bot.rank.keys():
             await bot.link_acct(word_list[1], message)
-            #THEN IMMEDIATELY CREATE DATABASE USER WITH MMR AND RANK
-    #ONLY FOR TESTING PURPOSES
+
     if message.content == "=mmr":
         mmr = bot.show_mmr(message.author.id)
         await message.channel.send(f'Your mmr is {mmr}')
-#just a test function rn
+
     if message.content.startswith('=edit'):
         #SHOULD ONLY BE ACCESSIBLE BY ADMIN
         role = get(message.guild.roles, name='Admin')

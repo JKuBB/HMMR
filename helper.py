@@ -58,7 +58,7 @@ class Bot:
 
     def bad_words(self, message_list):
         #word filter
-        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded', 'kys', 'retard']
+        no_no_words = ["nigger", 'nig', 'fag', 'faggot', 'gay', 'retarded', 'kys', 'retard', "!david"]
 
         for word in no_no_words:
             for string in message_list:

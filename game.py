@@ -11,7 +11,6 @@ class Game:
     def q(self, user):
         if user not in self.queue:
             self.queue.append(user)
-            print(self.queue)
             bool = True
         else:
             bool = False
@@ -53,7 +52,7 @@ class Game:
         return embed
 
     def check_q_full(self):
-        if len(self.queue) == 2:
+        if len(self.queue) == 4:
             embed=''
             for user in range(len(self.queue)):
                 embed +='  <@' + str(self.queue[user].id) + '>'
@@ -67,9 +66,4 @@ class Game:
         self.queue = []
         self.game_id+=1
 
-    def win(self, user):
-        pass
 
-    def loss(self, user):
-
-        pass
